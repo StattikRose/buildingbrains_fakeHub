@@ -1,0 +1,12 @@
+{
+  "link": "http://localhost:8080/devices/switch",
+  "state": "OFF",
+  "type": "Switch",
+  "category": ""
+},
+{
+  "link": "http://localhost:8080/devices/dimmer",
+  "state": "0",
+  "type": "Dimmer",
+  "category": ""
+}
