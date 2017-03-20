@@ -74,12 +74,6 @@ dotenv.load({ path: '.env.example' })
                 }
               })
             }
-
-            // else{
-            //   console.log("this happening")
-            //   res.status(400).json({error: "Device "+link+" not found"})
-            //   return
-            // }
           })
         }
         res.status(200).json({updates: JSON.parse(body).updates})

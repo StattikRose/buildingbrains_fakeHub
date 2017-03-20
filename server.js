@@ -2,6 +2,7 @@
  * Module dependencies.
  */
 const express = require('express')
+const promise = require('bluebird')
 const compression = require('compression')
 const bodyParser = require('body-parser')
 const logger = require('morgan')
@@ -15,6 +16,8 @@ const expressValidator = require('express-validator')
 const expressStatusMonitor = require('express-status-monitor')
 const assert = require('assert')
 const cors = require('cors')
+const request = require('request')
+const async = require('async')
 
 /**
  * Load environment variables from .env file, where API keys and passwords are configured.
@@ -76,5 +79,45 @@ server.listen(server.get('port'), () => {
   console.log('%s Server is running at http://localhost:%d in %s mode', chalk.green('✓'), server.get('port'), server.get('env')) 
   console.log('  Press CTRL-C to stop\n')
 })
+
+async.series([
+    function(callback) {
+        request.get('http://localhost:8080/registerHub')
+        console.log("1")
+        callback(null, 'one');
+    },
+    function(callback) {
+      function functionCall(){
+        request.post({url:'http://localhost:8080/newDevice',
+        form: {
+          deviceLink: "http://localhost:8080/devices/switch",
+          state: "OFF",
+          category: "",
+          type: "Switch"
+        }},
+        function(err){})
+
+        request.post({url:'http://localhost:8080/newDevice',
+        form: {
+          deviceLink: "http://localhost:8080/devices/dimmer",
+          state: "0",
+          category: "",
+          type: "Dimmer"
+        }},
+        function(err){})
+      }
+      setTimeout(functionCall, 1000);
+      console.log("2")
+      callback(null, 'two');
+    }
+],
+// optional callback
+function(err, results) {
+    // results is now equal to ['one', 'two']
+});
+
+setInterval(function() {
+  request.get('http://localhost:8080/updates')
+}, 1000);
 
 module.exports = server
