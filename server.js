@@ -83,7 +83,6 @@ server.listen(server.get('port'), () => {
 async.series([
     function(callback) {
         request.get('http://localhost:8080/registerHub')
-        console.log("1")
         callback(null, 'one');
     },
     function(callback) {
@@ -92,7 +91,6 @@ async.series([
         form: {
           deviceLink: "http://localhost:8080/devices/switch",
           state: "OFF",
-          category: "",
           type: "Switch"
         }},
         function(err){})
@@ -101,13 +99,35 @@ async.series([
         form: {
           deviceLink: "http://localhost:8080/devices/dimmer",
           state: "0",
-          category: "",
           type: "Dimmer"
         }},
         function(err){})
+
+        request.post({url:'http://localhost:8080/newDevice',
+        form: {
+          deviceLink: "http://localhost:8080/devices/color",
+          state: "0,0,0",
+          type: "Color"
+        }},
+        function(err){})
+
+        request.post({url:'http://localhost:8080/newDevice',
+        form: {
+          deviceLink: "http://localhost:8080/devices/number",
+          state: "0",
+          type: "Number"
+        }},
+        function(err){})
+
+        request.post({url:'http://localhost:8080/newDevice',
+        form: {
+          deviceLink: "http://localhost:8080/devices/contact",
+          state: "CLOSED",
+          type: "Contact"
+        }},
+        function(err){})
       }
-      setTimeout(functionCall, 1000);
-      console.log("2")
+      setTimeout(functionCall, 1500);
       callback(null, 'two');
     }
 ],
